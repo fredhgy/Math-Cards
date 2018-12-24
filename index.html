@@ -76,7 +76,7 @@
             <h1 style="margin-bottom:0;">Math Cards</h1>version:<text id="version"></text></div>
 
         <div id="menu" style="background-color:#EEEEEE;height:100%;width:40%;float:left;">
-            <!--<input type="button" id="test" value="test" onclick="test()">-->
+            <input type="button" id="test" value="test" onclick="test()">
             <input type="button" id="packs" value="packs" onclick="packs()">
             <br>
             <b>说明</b>
@@ -296,12 +296,11 @@
         var version;
 
         function load() {
-            version = "20.12.18";
+            version = "24.12.18";
             document.getElementById("version").innerHTML = version;
 
             counterdisplay();
             numberleftdisplay();
-
         }
 
         function numberleftdisplay() {
@@ -356,8 +355,20 @@
         }
 
         function test() {
-            counter = 100;
-            document.getElementById("counter").innerHTML = counter;
+            var testcode = prompt("testcode:");
+            testcode = Number(testcode);
+            if (testcode == "100") {
+                counter = counter + 100;
+                document.getElementById("counter").innerHTML = counter;
+                setCookie("counter", counter, "30");
+            } else if (testcode == null) {
+
+            } else {
+                for (var i = 0; i < 12; i++) {
+                    numberleft[i] = numberleft[i] + testcode;
+                }
+                numberleftdisplay();
+            }
         }
 
         var i1 = 0; //cal1 empty
@@ -454,6 +465,9 @@
         }
 
         function packs() {
+            //if (counter <= 0) {
+            //    return;
+            //}
             counterchange(10);
             var deckopened = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
             var deckopenning = [0, 0, 0];
@@ -461,14 +475,19 @@
             for (var i = 0; i < 3; i++) {
                 ii = Math.floor((Math.random() * deckopened.length));
                 if (ii == 10 || ii == 11) {
-                    iii = Math.floor((Math.random() * deckopenning.length));
+                    iii = Math.floor((Math.random() * 10));
+                    //alert(iii);
                     if (iii == 0) {
                         deckopenning[i] = deckopened[ii];
+                        numberleft[ii]++;
+                    } else {
+                        numberleft[iii]++;
                     }
                 } else {
                     deckopenning[i] = deckopened[ii];
+                    numberleft[ii]++;
                 }
-                numberleft[ii]++;
+
             }
             //alert(deckopenning);
             numberleftdisplay();
